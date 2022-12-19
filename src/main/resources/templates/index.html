@@ -29,6 +29,10 @@
             <input type="text" placeholder=" 주소를 입력하세요..." />
             <button class="postBtn" onclick="getPostCode()">우편번호 찾기</button>
           </div>
+          <div class="input-box">
+            <label>과정명 </label>
+            <input type="text" placeholder=" 과정명을 입력하세요..." />
+          </div>
           <div class="btn-area">
             <a href="#" class="btn-cancel" onclick="">등록 취소</a>
             <a href="#" class="btn-success" onclick="">학생 등록</a>
@@ -101,7 +105,7 @@
     <div class="main">
       <!-- cards -->
       <div class="cardBox">
-        <div class="card">
+        <div v class="card">            <!-- window.onload() 혹은 스크립트 태그 내 가장 바깥 부분에서 함수 호출해서 값 띄우기 -->
           <div>
             <div id="studentsCnt" class="numbers">2</div>
             <div class="cardName">학생 수</div>
@@ -139,7 +143,7 @@
                 <th>과정 명</th>
               </tr>
             </thead>
-            <tbody id="data">
+            <tbody id="data">           <!-- tbody 내부 지우고 jqury로 tr td 생성하기, <tr onclick="getData()"> -->
               <tr onclick="getData()">
                 <td>6500</td>
                 <td>현상원</td>
