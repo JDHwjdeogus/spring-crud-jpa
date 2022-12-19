@@ -1,0 +1,62 @@
+학생: 학생 번호, 학생 이름, 학생 나이, 학생 연락처, 주소, 과정명 	Sid Sname Sage Stel Saddr 'Lid Lname'
+
+과정: 과정 번호, 과정 이름, 과정 호실, 과정 기간, 담당 교사	Lid Lname Lroom Ldate teacher
+
+6500	현상원	55	010-4097-****	대전 충정로 136	IoT 임베디드 과정
+7000	예진쌤	22	010-3371-****	서울 강남구 테헤란로 521	React 과정
+
+18990	주짓수 개발자 양성 과정	501호	22.06.15 ~ 22.12.22	이정수
+18330	React.js 개발자 양성 과정	502호	22.12.07 ~ 23.05.01	이예진
+
+
+
+
+	// 전체조회
+	@GetMapping("/member")
+	public List<Member> callAllMembers(){
+		// findAll == select * from 테이블명
+		return repo.findAll();
+	}
+	
+	
+	// 추가
+	@PostMapping("/member")
+	public Member callSaveMember(@RequestBody Member member) {
+		// save == insert
+		member = repo.save(member);
+		return member;
+	}
+	
+	
+	// 삭제
+	@DeleteMapping("/member/{id}")
+	public boolean callDeleteMember(@PathVariable long id) {
+		// deleteById == delete
+		// By == WHERE
+		try {
+			repo.deleteById(id);	// return 타입이 void 임.
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
+	}
+	
+	
+	// 수정
+	@PatchMapping("/member")
+	public Member updateMember(@RequestBody Member member) {
+		// save == update or insert
+		// 동일한 pk 값이 있으면 update
+		// 동일한 pk 값이 없으면 insert
+		member = repo.save(member);
+		return member;
+	}
+	
+	
+	// 상세조회
+	@GetMapping("/member/{id}")
+	public Member callMemberById(@PathVariable long id) {
+		// fincById == select * from emp where empno == 333(예시)
+		return repo.findById(id).get();
+	}
