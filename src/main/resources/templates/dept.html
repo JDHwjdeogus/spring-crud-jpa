@@ -14,28 +14,28 @@
         <div class="editor">
           <div class="input-box">
             <label>과정 번호 : </label>
-            <input type="number" placeholder="과정번호를 입력하세요..." />
+            <input type="number" id="lessonIdInsert" placeholder="과정번호를 입력하세요..." />
           </div>
           <div class="input-box">
             <label>과정 명 : </label>
-            <input type="text" placeholder="과정명을 입력하세요..." />
+            <input type="text" id="lessonNameInsert" placeholder="과정명을 입력하세요..." />
           </div>
           <div class="input-box">
             <label>과정 호실 : </label>
-            <input type="text" placeholder="과정호실을 입력하세요..." />
+            <input type="text" id="lessonRoomInsert" placeholder="과정호실을 입력하세요..." />
           </div>
           <div class="input-box">
             <label>과정 기간 : </label>
-            <input type="date" value="2022-08-01" placeholder="과정 시작 날짜입력..." />
-            <input type="date" value="2023-02-06" placeholder="과정 종료 날짜입력..." />
+            <input type="date" id="lessonStartDayInsert" value="2022-08-01" placeholder="과정 시작 날짜입력..." />
+            <input type="date" id="lessonEndDayInsert" value="2023-02-06" placeholder="과정 종료 날짜입력..." />
           </div>
           <div class="input-box">
             <label>담당 교사 : </label>
-            <input type="text" placeholder="교사이름 입력하세요..." />
+            <input type="text" id="lessonTeacherInsert" placeholder="교사이름 입력하세요..." />
           </div>
           <div class="btn-area">
             <a href="#" class="btn-cancel" onclick="">취소</a>
-            <a href="#" class="btn-success" onclick="">등록</a>
+            <a href="#" class="btn-success" onclick="insertLesson()">등록</a>
           </div>
         </div>
       </div>
@@ -47,28 +47,28 @@
           </div>
           <div class="input-box">
             <label>과정 번호 : </label>
-            <input type="number" value="9983" placeholder="과정번호를 입력하세요..." />
+            <input type="number" id="lessonIdUpdate" placeholder="과정번호를 입력하세요..." />
           </div>
           <div class="input-box">
             <label>과정 명 : </label>
-            <input type="text" value="웹개발자 양성과정" placeholder="과정명을 입력하세요..." />
+            <input type="text" id="lessonNameUpdate" placeholder="과정명을 입력하세요..." />
           </div>
           <div class="input-box">
             <label>과정 호실 : </label>
-            <input type="text" value="501호" placeholder="과정호실을 입력하세요..." />
+            <input type="text" id="lessonRoomUpdate" placeholder="과정호실을 입력하세요..." />
           </div>
           <div class="input-box">
             <label>과정 기간 : </label>
-            <input type="date" value="2022-08-02" placeholder="과정 시작 날짜입력..." />
-            <input type="date" value="2023-02-06" placeholder="과정 종료 날짜입력..." />
+            <input type="date" id="lessonStartDayUpdate" placeholder="과정 시작 날짜입력..." />
+            <input type="date" id="lessonEndDayUpdate" placeholder="과정 종료 날짜입력..." />
           </div>
           <div class="input-box">
             <label>담당 교사 : </label>
-            <input type="text" value="현상원 명예교수" placeholder="교사이름 입력하세요..." />
+            <input type="text" id="lessonTeacherUpdate" placeholder="교사이름 입력하세요..." />
           </div>
           <div class="btn-area">
-            <a href="#" class="btn-update" onclick="">수정</a>
-            <a href="#" class="btn-delete" onclick="">삭제</a>
+            <a href="#" class="btn-update" onclick="updateLesson()">수정</a>
+            <a href="#" class="btn-delete" onclick="deleteLesson()">삭제</a>
           </div>
         </div>
       </div>
@@ -81,13 +81,13 @@
             </a>
           </li>
           <li>
-            <a href="./index.html">
+            <a href="#" onclick="goToStudentPage()">
               <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
               <span class="title">학생 목록</span>
             </a>
           </li>
           <li>
-            <a href="./dept.html">
+            <a href="#" onclick="goToLessonPage()">
               <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
               <span class="title">과정 목록</span>
             </a>
@@ -120,21 +120,8 @@
                 <th>담당 교사</th>
               </tr>
             </thead>
-            <tbody id="data">             <!-- tbody 내부 지우고 jqury로 tr td 생성하기, <tr onclick="getSubject()"> -->
-              <tr onclick="getSubject()">
-                <td>18990</td>
-                <td>주짓수 개발자 양성 과정</td>
-                <td>501호</td>
-                <td>22.06.15 ~ 22.12.22</td>
-                <td>이정수</td>
-              </tr>
-              <tr onclick="getSubject()">
-                <td>18330</td>
-                <td>React.js 개발자 양성 과정</td>
-                <td>502호</td>
-                <td>22.12.07 ~ 23.05.01</td>
-                <td>이예진</td>
-              </tr>
+            <tbody id="data">
+              <!-- tbody 내부 지우고 jqury로 tr td 생성하기, <tr onclick="getSubject()"> -->
             </tbody>
           </table>
           <!-- 페이징 처리하는 HTML -->
@@ -161,6 +148,131 @@
     crossorigin="anonymous"
   ></script>
   <script>
+    
+    // 페이지 이동(navi)
+    function goToLessonPage(){
+      location.href = '/lesson-page';
+    }
+    function goToStudentPage(){
+      location.href = '/student-page';
+    }
+
+
+    // 강의 정보 전체 select
+    window.onload = function(){
+      // AJAX: 전체 조회
+      $.ajax({
+          url: '/lesson',
+          type: 'GET',
+          dataType: 'json',
+          success: function (response) {
+            var out_table = "";
+            for (var j = 0; j < response.length; j++) {
+              out_table += "<tr onclick='getSubject(" + response[j].lessonId + ")'>"
+            			  + "<td>" + response[j].lessonId + "</td>"
+            			  + "<td>" + response[j].lessonName + "</td>"
+            			  + "<td>" + response[j].lessonRoom + "</td>"
+            			  + "<td>" + response[j].lessonStartDay + " ~ " + response[j].lessonEndDay + "</td>"
+            			  + "<td>" + response[j].lessonTeacher + "</td>"
+            			  +"</tr>";
+            }
+            $("#data").append(out_table);
+          }
+      }); 
+    }
+
+
+    // 강의 정보 insert
+    function insertLesson(){
+      var lessonId = $("#lessonIdInsert").val();      // auto increment 외의 id 담을 컬럼 만들어야 함
+      var lessonName = $("#lessonNameInsert").val();
+      var lessonRoom = $("#lessonRoomInsert").val();
+      var lessonStartDay = $("#lessonStartDayInsert").val();
+      var lessonEndDay = $("#lessonEndDayInsert").val();
+      var lessonTeacher = $("#lessonTeacherInsert").val();
+
+      var jsonData = {
+          "lessonId" : lessonId,
+          "lessonName" : lessonName,
+          "lessonRoom" : lessonRoom,
+          "lessonStartDay" : lessonStartDay,
+          "lessonEndDay" : lessonEndDay,
+          "lessonTeacher" : lessonTeacher
+      }
+
+      $.ajax({
+          url: '/lesson',
+          type:'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(jsonData),
+          dataType: 'json',
+          success: function(response){
+            alert("강의 등록 완료...!");
+            location.reload();
+          }
+      });
+
+    }
+
+
+    // 강의 정보 update
+    function updateLesson(){
+      var lessonId = $("#lessonIdUpdate").val();
+      var lessonName = $("#lessonNameUpdate").val();
+      var lessonRoom = $("#lessonRoomUpdate").val();
+      var lessonStartDay = $("#lessonStartDayUpdate").val();
+      var lessonEndDay = $("#lessonEndDayUpdate").val();
+      var lessonTeacher = $("#lessonTeacherUpdate").val();
+		
+		  var jsonData = {
+          "lessonId" : lessonId,
+          "lessonName" : lessonName,
+          "lessonRoom" : lessonRoom,
+          "lessonStartDay" : lessonStartDay,
+          "lessonEndDay" : lessonEndDay,
+          "lessonTeacher" : lessonTeacher
+		  }
+			
+		// AJAX
+	    $.ajax({
+	        url: '/lesson',
+	        type:'PATCH',
+	        contentType: 'application/json',
+	        data: JSON.stringify(jsonData),
+	        dataType: 'json',
+	        success: function(response){
+	        	alert("강의 정보 수정 완료...!");
+	        	location.reload();
+	        }
+	    });
+
+    }
+
+
+    // 강의 정보 delete
+    function deleteLesson(){
+      var lessonId = $("#lessonIdUpdate").val();
+		
+      if(lessonId == "") {
+        alert("강의 번호를 입력해주세요.");
+        $("#lessonIdUpdate").focus();
+        return false;
+      }
+      
+      // AJAX
+      $.ajax({
+          url: '/lesson/' + lessonId,
+          type:'DELETE',
+          dataType: 'json',
+          success: function(response){
+            alert("강의 정보 제거 완료...!");
+            location.reload();
+          }
+      });
+
+    }
+
+
     $('.btn-cancel').click(function () {
       $('.write-popup').css('display', 'none');
     });
@@ -178,9 +290,27 @@
       item.addEventListener('mouseover', activeLink);
     });
 
-    function getSubject() {
+    function getSubject(lessonId) {
       $('.update-popup').css('display', 'block');
+
+
+      // AJAX: 강의 상세정보 select
+	    $.ajax({
+          url: '/lesson/' + lessonId,
+          type: 'GET',
+          dataType: 'json',
+          success: function (response) {
+          	$("#lessonIdUpdate").val(response.lessonId);
+            $("#lessonNameUpdate").val(response.lessonName);
+            $("#lessonRoomUpdate").val(response.lessonRoom);
+            $("#lessonStartDayUpdate").val(response.lessonStartDay);
+            $("#lessonEndDayUpdate").val(response.lessonEndDay);
+            $("#lessonTeacherUpdate").val(response.lessonTeacher);
+          }
+      });
+
     }
+
 
     function addSubject() {
       $('.write-popup').css('display', 'block');

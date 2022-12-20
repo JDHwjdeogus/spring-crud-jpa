@@ -1,62 +1,20 @@
-학생: 학생 번호, 학생 이름, 학생 나이, 학생 연락처, 주소, 과정명 	Sid Sname Sage Stel Saddr 'Lid Lname'
+?  6000	 정대현	26	010-4632-****	대전 동구 옥천로 180번길 47-2	14
+?  6500	 박대기	55	010-4097-****	대전 유성구 가정로 8 (신성동)	12
+?  7000	 이희원	22	010-3371-****	서울 강남구 테헤란로 521	  	13
+==========================================================
+?  7899	  현상원	88	010-1231-****	대전 선화동 방산빌딩 201호	  	15
+==========================================================
+12	18330	주짓수 개발자 양성 과정	501호	2022-06-15   2022-12-22	이정수
+13	18990	React.js 개발자 양성 과정	502호	2022-12-07   2023-05-19	이예진
+14	19680	IoT 임베디드 과정	   	502호   	2022-08-10   2023-02-24   	현상원
+15	19800	웹개발자 양성과정	   	503호   	2022-12-02   2023-06-09   	전계림
+==========================================================
 
-과정: 과정 번호, 과정 이름, 과정 호실, 과정 기간, 담당 교사	Lid Lname Lroom Ldate teacher
-
-6500	현상원	55	010-4097-****	대전 충정로 136	IoT 임베디드 과정
-7000	예진쌤	22	010-3371-****	서울 강남구 테헤란로 521	React 과정
-
-18990	주짓수 개발자 양성 과정	501호	22.06.15 ~ 22.12.22	이정수
-18330	React.js 개발자 양성 과정	502호	22.12.07 ~ 23.05.01	이예진
+auto increment로 자동 증가되는 id(학생번호, 강의번호) 외의 다른 id 컬럼 하나 더 만들어야 함 
 
 
 
 
-	// 전체조회
-	@GetMapping("/member")
-	public List<Member> callAllMembers(){
-		// findAll == select * from 테이블명
-		return repo.findAll();
-	}
-	
-	
-	// 추가
-	@PostMapping("/member")
-	public Member callSaveMember(@RequestBody Member member) {
-		// save == insert
-		member = repo.save(member);
-		return member;
-	}
-	
-	
-	// 삭제
-	@DeleteMapping("/member/{id}")
-	public boolean callDeleteMember(@PathVariable long id) {
-		// deleteById == delete
-		// By == WHERE
-		try {
-			repo.deleteById(id);	// return 타입이 void 임.
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-		
-	}
-	
-	
-	// 수정
-	@PatchMapping("/member")
-	public Member updateMember(@RequestBody Member member) {
-		// save == update or insert
-		// 동일한 pk 값이 있으면 update
-		// 동일한 pk 값이 없으면 insert
-		member = repo.save(member);
-		return member;
-	}
-	
-	
-	// 상세조회
-	@GetMapping("/member/{id}")
-	public Member callMemberById(@PathVariable long id) {
-		// fincById == select * from emp where empno == 333(예시)
-		return repo.findById(id).get();
-	}
+update, insert 둘 다 lesson_id 데이터가 안넘어감
+update는 다른 값에 수정이 발생해도 lesson_id가 입력되지 않아서 초기화됨
+insert는 lesson_id가 입력되지 않음

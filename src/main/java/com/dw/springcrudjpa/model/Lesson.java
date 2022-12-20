@@ -27,7 +27,10 @@ public class Lesson {
     private String lessonRoom;
 
     @Column
-    private String lessonDays;
+    private String lessonStartDay;
+
+    @Column
+    private String lessonEndDay;
 
     @Column
     private String lessonTeacher;
