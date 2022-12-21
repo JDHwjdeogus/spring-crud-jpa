@@ -35,7 +35,7 @@ public class Student {
     @Column
     private String studentAddress;
 
-    // join: Lid Lname
+    // join
     @ManyToOne
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;

@@ -18,3 +18,5 @@ auto increment로 자동 증가되는 id(학생번호, 강의번호) 외의 다�
 update, insert 둘 다 lesson_id 데이터가 안넘어감
 update는 다른 값에 수정이 발생해도 lesson_id가 입력되지 않아서 초기화됨
 insert는 lesson_id가 입력되지 않음
+
+
